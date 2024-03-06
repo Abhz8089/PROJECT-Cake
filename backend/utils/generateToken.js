@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 const createUserToken = (res, data) => {
   let token = jwt.sign(
     { data, exp: Math.floor(Date.now() / 1000) * (60 * 60) },
@@ -29,6 +31,24 @@ const getUserToken = (req) => {
     }
   }
 };
+
+const getUserDataFromToken = (req) => {
+  try {
+    const token = getUserToken(req);
+
+    if (token) {
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+      return decodedToken.data;
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    return null;
+  }
+};
+
+
 
 const createAdminToken = (res, data) => {
   let token = jwt.sign(
@@ -62,4 +82,10 @@ const getAdminToken = (req) => {
   }
 };
 
-export { createUserToken, getUserToken, createAdminToken,getAdminToken };
+export {
+  createUserToken,
+  getUserToken,
+  createAdminToken,
+  getAdminToken,
+  getUserDataFromToken,
+};

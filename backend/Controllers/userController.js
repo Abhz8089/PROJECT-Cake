@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import {generateOTP,transporter} from '../Helpers/otpGenerator.js'
 import {hashPassword,comparePassword} from '../Helpers/Hashing.js'
 import User from '../Models/UserModel.js'
-import {createUserToken,getUserToken} from '../utils/generateToken.js'
+import {createUserToken,getUserToken,getUserDataFromToken} from '../utils/generateToken.js'
 
 const userSignup = async (req, res) => {
 
@@ -79,7 +79,6 @@ const userSignup = async (req, res) => {
               phone: phone,
               password: hashedPassword,
             });
-            console.log(user, "-------------------------user");
             if (user) {
               return res.json(user);
             } else {
@@ -121,7 +120,6 @@ const userSignup = async (req, res) => {
   }
 
   const userLogin=async(req,res) => {
-   console.log(req.body)
     try {
       const {email,password}= req.body;
           let isEmail = false;
@@ -193,6 +191,20 @@ const userSignup = async (req, res) => {
     console.log(req.body)
   }
 
+  const isUserOrNot = async (req,res) => {
+   try {
+    const data = await getUserDataFromToken(req);
+    if(!data){
+      return res.json({error:'user not available'})
+    }else{
+      return res.json(data)
+    }
+   } catch (error) {
+      console.log(error)
+      return res.json(error)
+   }
 
 
-export { userSignup, Register, resendOTP, userLogin, logout ,Login};
+  }
+
+export { userSignup, Register, resendOTP, userLogin, logout ,Login,isUserOrNot};

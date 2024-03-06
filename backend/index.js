@@ -14,6 +14,8 @@ import connectDB from './config/config.js';
 import userRoutes from './Routes/userRoutes.js'
 import adminRoutes from './Routes/adminRoutes.js'
 import productRoutes from './Routes/productRoutes.js'
+import BannersOffers from './Routes/BannersOffers.js';
+import userSubRoutes from './Routes/userSubRoutes.js'
 
 //========data base connection=====
 connectDB();
@@ -33,8 +35,10 @@ app.use(express.urlencoded({extended:false}))
 
 
 app.use('/',userRoutes)
+app.use('/sub', userSubRoutes);
 app.use('/admin/api',adminRoutes)
 app.use('/products',productRoutes)
+app.use('/bo',BannersOffers)
 
 
 

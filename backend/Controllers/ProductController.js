@@ -3,6 +3,7 @@ import productModel from '../Models/ProductModel.js'
 import {capitalizeFirstLetter} from '../Helpers/WordStructure.js'
 
 const addProduct = async (req, res) => {
+ 
   try {
     if (!req.files.length) {
       return res.json({ error: "Choose image" });
@@ -21,6 +22,7 @@ const addProduct = async (req, res) => {
     const result = await productModel.create({productName:proName,categoryName:CategoryName,price,photos:filePaths})
 
     if(result){
+      
       return res.json(result)
     }
     
@@ -32,7 +34,8 @@ const addProduct = async (req, res) => {
 
 const getProduct = async(req,res) =>{
    try {
-    const getData = await productModel.find();
+    const getData = await productModel.find({isHide:false});
+   
     return res.json(getData)
    } catch (error) {
      console.log(error)
